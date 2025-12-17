@@ -36,3 +36,4 @@ Streamlit 앱 실행 중:
 
 `@st.cache_data` 데코레이터를 주석 처리하거나 제거
 
+

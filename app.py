@@ -79,6 +79,177 @@ def load_data():
         st.stop()
 
 
+# 언어별 텍스트 매핑
+TEXTS = {
+    'ko': {
+        'title': '로보틱스 & AI 논문 트렌드 분석 대시보드',
+        'settings': '⚙️ 설정',
+        'language': '🌐 언어 선택',
+        'clear_cache': '🔄 캐시 클리어 & 새로고침',
+        'clear_cache_help': '캐시를 클리어하고 페이지를 새로고침합니다',
+        'clear_cache_caption': '💡 캐시 누적으로 목록의 순서가 안맞을때 누르세요',
+        'category_selection': '📂 카테고리 그룹 선택',
+        'select_category_warning': '⚠️ 최소 1개 이상의 카테고리 그룹을 선택해주세요.',
+        'year_range': '연도 범위 선택',
+        'data_year': '데이터 연도',
+        'top_n_keywords': '분석할 Top N 키워드 개수',
+        'keyword_source': '키워드 추출 소스',
+        'keyword_source_help': 'Abstract: 논문 초록에서 키워드 추출\nTitle: 논문 제목에서 키워드 추출',
+        'analyze_start': '🚀 분석 시작',
+        'select_category_error': '카테고리 그룹을 선택해주세요!',
+        'extracting_keywords': '에서 키워드 추출 중...',
+        'data_summary': '📊 데이터 요약',
+        'selected_papers': '선택된 논문 수',
+        'total_papers': '전체 논문 수',
+        'papers': '총 논문 수',
+        'year_range_label': '연도 범위',
+        'selected_groups': '선택된 그룹',
+        'groups': '개',
+        'included_categories': '포함 카테고리',
+        'categories': '개',
+        'keyword_source_label': '키워드 소스',
+        'select_category_info': '👆 카테고리를 선택하고 \'분석 시작\' 버튼을 클릭하세요.',
+        'start_analysis_info': '👈 사이드바에서 카테고리를 선택하고 \'분석 시작\' 버튼을 클릭하여 분석을 시작하세요.',
+        'no_data_warning': '선택된 카테고리에 해당하는 데이터가 없습니다.',
+        'no_keywords_warning': '키워드를 추출할 수 없습니다. 다른 설정을 시도해보세요.',
+        'tab_trend': '📈 연도별 흐름 (Trend)',
+        'tab_heatmap': '🔥 히트맵 (Heatmap)',
+        'tab_bump': '🏆 순위 경쟁 (Bump Chart)',
+        'tab_hype': '🚀 하이프 사이클 (Hype Cycle)',
+        'trend_header': '연도별 주요 키워드 트렌드',
+        'trend_desc': '시간에 따른 주요 키워드의 논문 수 변화를 시각화합니다.',
+        'trend_chart_title': '연도별 주요 키워드 트렌드 (Streamgraph)',
+        'trend_xaxis': '연도',
+        'trend_yaxis': '논문 수',
+        'keyword_stats': '키워드별 통계',
+        'total_papers_col': '총 논문 수',
+        'avg_papers_col': '평균 논문 수',
+        'max_papers_col': '최대 논문 수',
+        'heatmap_header': '연도별 키워드 빈도 히트맵',
+        'heatmap_desc': '연도와 키워드의 교차점에서 논문 수를 색상 농도로 표현합니다.',
+        'heatmap_title': '연도별 키워드 빈도 히트맵',
+        'heatmap_xaxis': '연도',
+        'heatmap_yaxis': '키워드',
+        'heatmap_colorbar': '논문 수',
+        'bump_header': '연도별 키워드 순위 변화',
+        'bump_desc': '시간에 따른 키워드의 순위 변화를 추적합니다.',
+        'bump_title': '연도별 키워드 순위 변화 (Top {})',
+        'bump_xaxis': '연도',
+        'bump_yaxis': '순위',
+        'hype_header': '하이프 사이클 스타일 차트',
+        'hype_desc': '기술 성장률과 총 언급량을 기준으로 키워드를 배치합니다.',
+        'hype_xaxis_label': 'X축',
+        'hype_yaxis_label': 'Y축',
+        'hype_size_label': '점 크기',
+        'hype_xaxis_desc': '기술 성장률 (전년 대비 증가율)',
+        'hype_yaxis_desc': '기술 언급량 (Total Volume)',
+        'hype_size_desc': '최신 연도 언급량',
+        'hype_title': '하이프 사이클 스타일 차트',
+        'hype_xaxis': '기술 성장률 (전년 대비 증가율, %)',
+        'hype_yaxis': '기술 언급량 (Total Volume)',
+        'hype_colorbar': '최신 연도<br>언급량',
+        'hype_hover_total': '총 언급량',
+        'hype_hover_growth': '성장률',
+        'hype_hover_latest': '최신 연도 언급량',
+        'hype_no_data': '데이터가 부족하여 차트를 생성할 수 없습니다.',
+        'footer_notes': '📝 참고사항',
+        'footer_data_source': '데이터는 arXiv API를 통해 수집되었습니다.',
+        'footer_keyword_source': '키워드는 논문 제목(Title)과 초록(Abstract)에서 추출되었으며, 불필요한 단어는 제외되었습니다.',
+        'footer_period': '데이터 수집기간 : 2021~2025년, (만든이 : Minsu Hwang)',
+        'papers_count': '건',
+        'categories_count': '개 카테고리'
+    },
+    'en': {
+        'title': 'Robotics & AI Paper Trend Analysis Dashboard',
+        'settings': '⚙️ Settings',
+        'language': '🌐 Language',
+        'clear_cache': '🔄 Clear Cache & Refresh',
+        'clear_cache_help': 'Clear cache and refresh the page',
+        'clear_cache_caption': '💡 Click when category list order is incorrect due to cache accumulation',
+        'category_selection': '📂 Category Group Selection',
+        'select_category_warning': '⚠️ Please select at least one category group.',
+        'year_range': 'Year Range Selection',
+        'data_year': 'Data Year',
+        'top_n_keywords': 'Top N Keywords to Analyze',
+        'keyword_source': 'Keyword Extraction Source',
+        'keyword_source_help': 'Abstract: Extract keywords from paper abstracts\nTitle: Extract keywords from paper titles',
+        'analyze_start': '🚀 Start Analysis',
+        'select_category_error': 'Please select a category group!',
+        'extracting_keywords': 'Extracting keywords from...',
+        'data_summary': '📊 Data Summary',
+        'selected_papers': 'Selected Papers',
+        'total_papers': 'Total Papers',
+        'papers': 'Total Papers',
+        'year_range_label': 'Year Range',
+        'selected_groups': 'Selected Groups',
+        'groups': 'groups',
+        'included_categories': 'Included Categories',
+        'categories': 'categories',
+        'keyword_source_label': 'Keyword Source',
+        'select_category_info': '👆 Please select categories and click the \'Start Analysis\' button.',
+        'start_analysis_info': '👈 Please select categories in the sidebar and click the \'Start Analysis\' button to begin analysis.',
+        'no_data_warning': 'No data available for the selected categories.',
+        'no_keywords_warning': 'Unable to extract keywords. Please try different settings.',
+        'tab_trend': '📈 Trend Over Time',
+        'tab_heatmap': '🔥 Heatmap',
+        'tab_bump': '🏆 Ranking Competition (Bump Chart)',
+        'tab_hype': '🚀 Hype Cycle',
+        'trend_header': 'Annual Keyword Trends',
+        'trend_desc': 'Visualizes changes in the number of papers for major keywords over time.',
+        'trend_chart_title': 'Annual Major Keyword Trends (Streamgraph)',
+        'trend_xaxis': 'Year',
+        'trend_yaxis': 'Number of Papers',
+        'keyword_stats': 'Keyword Statistics',
+        'total_papers_col': 'Total Papers',
+        'avg_papers_col': 'Average Papers',
+        'max_papers_col': 'Max Papers',
+        'heatmap_header': 'Annual Keyword Frequency Heatmap',
+        'heatmap_desc': 'Represents the number of papers at the intersection of years and keywords using color intensity.',
+        'heatmap_title': 'Annual Keyword Frequency Heatmap',
+        'heatmap_xaxis': 'Year',
+        'heatmap_yaxis': 'Keyword',
+        'heatmap_colorbar': 'Number of Papers',
+        'bump_header': 'Annual Keyword Ranking Changes',
+        'bump_desc': 'Tracks changes in keyword rankings over time.',
+        'bump_title': 'Annual Keyword Ranking Changes (Top {})',
+        'bump_xaxis': 'Year',
+        'bump_yaxis': 'Rank',
+        'hype_header': 'Hype Cycle Style Chart',
+        'hype_desc': 'Places keywords based on technology growth rate and total mentions.',
+        'hype_xaxis_label': 'X-axis',
+        'hype_yaxis_label': 'Y-axis',
+        'hype_size_label': 'Point Size',
+        'hype_xaxis_desc': 'Technology Growth Rate (Year-over-Year Increase, %)',
+        'hype_yaxis_desc': 'Technology Mentions (Total Volume)',
+        'hype_size_desc': 'Latest Year Mentions',
+        'hype_title': 'Hype Cycle Style Chart',
+        'hype_xaxis': 'Technology Growth Rate (Year-over-Year Increase, %)',
+        'hype_yaxis': 'Technology Mentions (Total Volume)',
+        'hype_colorbar': 'Latest Year<br>Mentions',
+        'hype_hover_total': 'Total Mentions',
+        'hype_hover_growth': 'Growth Rate',
+        'hype_hover_latest': 'Latest Year Mentions',
+        'hype_no_data': 'Insufficient data to generate chart.',
+        'footer_notes': '📝 Notes',
+        'footer_data_source': 'Data was collected through the arXiv API.',
+        'footer_keyword_source': 'Keywords were extracted from paper titles and abstracts, with unnecessary words excluded.',
+        'footer_period': 'Data Collection Period: 2021~2025, (Created by: Minsu Hwang)',
+        'papers_count': 'papers',
+        'categories_count': 'categories'
+    }
+}
+
+def get_language():
+    """현재 선택된 언어를 반환합니다."""
+    if 'language' not in st.session_state:
+        st.session_state.language = 'ko'
+    return st.session_state.language
+
+def get_text(key):
+    """언어에 맞는 텍스트를 반환합니다."""
+    lang = get_language()
+    return TEXTS[lang].get(key, key)
+
 # 카테고리명 한글 매핑
 CATEGORY_NAMES_KR = {
     "cs.AI": "인공지능",
@@ -574,7 +745,7 @@ def get_top_keywords_by_year(df, top_n=20, source='abstract'):
     return keyword_df
 
 
-def create_trend_chart(keyword_df, selected_years):
+def create_trend_chart(keyword_df, selected_years, lang='ko'):
     """연도별 키워드 트렌드 차트 생성 (Streamgraph/Area Chart)"""
     # Year를 정수로 변환
     keyword_df = keyword_df.copy()
@@ -610,10 +781,11 @@ def create_trend_chart(keyword_df, selected_years):
             fill='tonexty' if len(fig.data) > 0 else 'tozeroy'
         ))
     
+    texts = TEXTS[lang]
     fig.update_layout(
-        title='연도별 주요 키워드 트렌드 (Streamgraph)',
-        xaxis_title='연도',
-        yaxis_title='논문 수',
+        title=texts['trend_chart_title'],
+        xaxis_title=texts['trend_xaxis'],
+        yaxis_title=texts['trend_yaxis'],
         hovermode='x unified',
         height=500,
         xaxis=dict(
@@ -634,7 +806,7 @@ def create_trend_chart(keyword_df, selected_years):
     return fig
 
 
-def create_heatmap(keyword_df, selected_years):
+def create_heatmap(keyword_df, selected_years, lang='ko'):
     """연도별 키워드 히트맵 생성"""
     # Year를 정수로 변환
     keyword_df = keyword_df.copy()
@@ -657,6 +829,7 @@ def create_heatmap(keyword_df, selected_years):
     # x축 데이터를 정수 리스트로 변환
     x_data = [int(x) for x in pivot_df.columns]
     
+    texts = TEXTS[lang]
     fig = go.Figure(data=go.Heatmap(
         z=pivot_df.values,
         x=x_data,
@@ -665,13 +838,13 @@ def create_heatmap(keyword_df, selected_years):
         text=pivot_df.values,
         texttemplate='%{text}',
         textfont={"size": 10},
-        colorbar=dict(title="논문 수")
+        colorbar=dict(title=texts['heatmap_colorbar'])
     ))
     
     fig.update_layout(
-        title='연도별 키워드 빈도 히트맵',
-        xaxis_title='연도',
-        yaxis_title='키워드',
+        title=texts['heatmap_title'],
+        xaxis_title=texts['heatmap_xaxis'],
+        yaxis_title=texts['heatmap_yaxis'],
         height=600,
         xaxis=dict(
             type='linear',
@@ -685,7 +858,7 @@ def create_heatmap(keyword_df, selected_years):
     return fig
 
 
-def create_bump_chart(keyword_df, selected_years, top_n=10):
+def create_bump_chart(keyword_df, selected_years, top_n=10, lang='ko'):
     """연도별 키워드 순위 변화 차트 생성"""
     # Year를 정수로 변환
     keyword_df = keyword_df.copy()
@@ -739,10 +912,11 @@ def create_bump_chart(keyword_df, selected_years, top_n=10):
             marker=dict(size=8)
         ))
     
+    texts = TEXTS[lang]
     fig.update_layout(
-        title=f'연도별 키워드 순위 변화 (Top {top_n})',
-        xaxis_title='연도',
-        yaxis_title='순위',
+        title=texts['bump_title'].format(top_n),
+        xaxis_title=texts['bump_xaxis'],
+        yaxis_title=texts['bump_yaxis'],
         xaxis=dict(
             type='linear',
             tickmode='linear',
@@ -757,7 +931,7 @@ def create_bump_chart(keyword_df, selected_years, top_n=10):
     return fig
 
 
-def create_hype_cycle_chart(keyword_df, selected_years):
+def create_hype_cycle_chart(keyword_df, selected_years, lang='ko'):
     """하이프 사이클 스타일 차트 생성"""
     # Year를 정수로 변환
     keyword_df = keyword_df.copy()
@@ -827,21 +1001,22 @@ def create_hype_cycle_chart(keyword_df, selected_years):
             color=stats_df['Latest_Count'],
             colorscale='Viridis',
             showscale=True,
-            colorbar=dict(title="최신 연도<br>언급량"),
+            colorbar=dict(title=TEXTS[lang]['hype_colorbar']),
             sizemode='diameter',
             sizemin=5,
             sizeref=stats_df['Latest_Count'].max() / 50
         ),
         hovertemplate='<b>%{text}</b><br>' +
-                      '총 언급량: %{y}<br>' +
-                      '성장률: %{x:.1f}%<br>' +
-                      '최신 연도 언급량: %{marker.size}<extra></extra>'
+                      f"{TEXTS[lang]['hype_hover_total']}: %{{y}}<br>" +
+                      f"{TEXTS[lang]['hype_hover_growth']}: %{{x:.1f}}%<br>" +
+                      f"{TEXTS[lang]['hype_hover_latest']}: %{{marker.size}}<extra></extra>"
     ))
     
+    texts = TEXTS[lang]
     fig.update_layout(
-        title='하이프 사이클 스타일 차트',
-        xaxis_title='기술 성장률 (전년 대비 증가율, %)',
-        yaxis_title='기술 언급량 (Total Volume)',
+        title=texts['hype_title'],
+        xaxis_title=texts['hype_xaxis'],
+        yaxis_title=texts['hype_yaxis'],
         height=600,
         hovermode='closest'
     )
@@ -851,7 +1026,14 @@ def create_hype_cycle_chart(keyword_df, selected_years):
 
 def main():
     """메인 애플리케이션"""
-    st.title("🤖 로보틱스 & AI 논문 트렌드 분석 대시보드")
+    # 언어 선택 초기화
+    if 'language' not in st.session_state:
+        st.session_state.language = 'ko'
+    
+    lang = get_language()
+    texts = TEXTS[lang]
+    
+    st.title(f"🤖 {texts['title']}")
     st.markdown("---")
     
     # 세션 상태 초기화
@@ -865,20 +1047,8 @@ def main():
     # 데이터 로드
     df = load_data()
     
-    # 사이드바 설정
-    st.sidebar.header("⚙️ 설정")
-    
-    # 캐시 클리어 버튼
-    if st.sidebar.button("🔄 캐시 클리어 & 새로고침", use_container_width=True, help="캐시를 클리어하고 페이지를 새로고침합니다"):
-        st.cache_data.clear()
-        st.rerun()
-    
-    st.sidebar.caption("💡 캐시 누적으로 목록의 순서가 안맞을때 누르세요")
-    
-    st.sidebar.markdown("---")
-    
-    # 카테고리 그룹 선택
-    st.sidebar.markdown("### 📂 카테고리 그룹 선택")
+    # 카테고리 그룹 선택 (맨 위로 이동)
+    st.sidebar.markdown(f"### {texts['category_selection']}")
     all_categories, available_groups = get_all_categories(df)
     
     # available_groups에서 중복 완전 제거 (방어적 프로그래밍)
@@ -926,8 +1096,10 @@ def main():
         # 그룹 체크박스 (논문 수 포함) - 인덱스를 포함한 완전히 고유한 key 사용
         paper_count = group_info.get("paper_count", 0)
         unique_key = f"cat_group_{idx}_{group_name.replace(' ', '_').replace('/', '_')}"
+        papers_text = texts['papers_count'] if lang == 'ko' else 'papers'
+        count_text = f"{paper_count:,}{papers_text}" if lang == 'ko' else f"{paper_count:,} {papers_text}"
         is_selected = st.sidebar.checkbox(
-            f"{group_name} ({paper_count:,}건)",
+            f"{group_name} ({count_text})",
             value=group_name in default_selected_groups,
             key=unique_key,
             help=group_info["description"]
@@ -937,7 +1109,8 @@ def main():
                 selected_groups.append(group_name)
             
             # 선택된 그룹의 카테고리 목록 표시 (접기/펼치기) - 컴팩트하게
-            with st.sidebar.expander(f"  └ {len(group_info['categories'])}개 카테고리", expanded=False):
+            categories_text = f"{len(group_info['categories'])}{texts['categories_count']}" if lang == 'ko' else f"{len(group_info['categories'])} {texts['categories_count']}"
+            with st.sidebar.expander(f"  └ {categories_text}", expanded=False):
                 # 카테고리를 2열로 표시하여 컴팩트하게
                 categories = group_info['categories']
                 num_cols = 2
@@ -945,9 +1118,12 @@ def main():
                 # 카테고리 텍스트를 미리 준비
                 category_texts = []
                 for cat in categories:
-                    kr_name = CATEGORY_NAMES_KR.get(cat, "")
-                    if kr_name:
-                        category_texts.append(f"{cat} ({kr_name})")
+                    if lang == 'ko':
+                        kr_name = CATEGORY_NAMES_KR.get(cat, "")
+                        if kr_name:
+                            category_texts.append(f"{cat} ({kr_name})")
+                        else:
+                            category_texts.append(cat)
                     else:
                         category_texts.append(cat)
                 
@@ -960,7 +1136,7 @@ def main():
                             cols[j].markdown(f"<small>{category_texts[i+j]}</small>", unsafe_allow_html=True)
     
     if not selected_groups:
-        st.sidebar.warning("⚠️ 최소 1개 이상의 카테고리 그룹을 선택해주세요.")
+        st.sidebar.warning(texts['select_category_warning'])
     
     st.sidebar.markdown("---")
     
@@ -975,10 +1151,10 @@ def main():
     # min과 max가 같을 때 슬라이더 오류 방지
     if min_year == max_year:
         selected_years = (min_year, max_year)
-        st.sidebar.info(f"데이터 연도: {min_year}")
+        st.sidebar.info(f"{texts['data_year']}: {min_year}")
     else:
         selected_years = st.sidebar.slider(
-            "연도 범위 선택",
+            texts['year_range'],
             min_value=min_year,
             max_value=max_year,
             value=(min_year, max_year),
@@ -989,7 +1165,7 @@ def main():
     
     # Top N 키워드 개수 선택
     top_n = st.sidebar.slider(
-        "분석할 Top N 키워드 개수",
+        texts['top_n_keywords'],
         min_value=5,
         max_value=30,
         value=15,
@@ -998,25 +1174,25 @@ def main():
     
     # 키워드 추출 소스 선택
     keyword_source = st.sidebar.radio(
-        "키워드 추출 소스",
+        texts['keyword_source'],
         options=['Abstract', 'Title'],
         index=0,
-        help="Abstract: 논문 초록에서 키워드 추출\nTitle: 논문 제목에서 키워드 추출"
+        help=texts['keyword_source_help']
     )
     
     # 분석 시작 버튼
     st.sidebar.markdown("---")
-    analyze_button = st.sidebar.button("🚀 분석 시작", type="primary", use_container_width=True)
+    analyze_button = st.sidebar.button(texts['analyze_start'], type="primary", use_container_width=True)
     
     if analyze_button:
         if not selected_groups:
-            st.sidebar.error("카테고리 그룹을 선택해주세요!")
+            st.sidebar.error(texts['select_category_error'])
         else:
             st.session_state.analysis_started = True
             # 선택된 그룹으로 필터링
             st.session_state.filtered_df = filter_by_categories(df, selected_groups)
             # 키워드 추출
-            with st.spinner(f"{keyword_source}에서 키워드 추출 중..."):
+            with st.spinner(f"{keyword_source} {texts['extracting_keywords']}"):
                 st.session_state.keyword_df = get_top_keywords_by_year(
                     st.session_state.filtered_df, 
                     top_n=top_n, 
@@ -1025,102 +1201,139 @@ def main():
     
     # 데이터 요약 정보 표시
     st.sidebar.markdown("---")
-    st.sidebar.markdown("### 📊 데이터 요약")
+    st.sidebar.markdown(f"### {texts['data_summary']}")
     if st.session_state.analysis_started and st.session_state.filtered_df is not None:
         filtered_count = len(st.session_state.filtered_df)
-        st.sidebar.metric("선택된 논문 수", f"{filtered_count:,}건")
-        st.sidebar.metric("전체 논문 수", f"{len(df):,}건")
-        st.sidebar.metric("연도 범위", f"{min_year} - {max_year}")
-        st.sidebar.info(f"선택된 그룹: {len(selected_groups)}개")
+        papers_text = texts['papers_count'] if lang == 'ko' else 'papers'
+        st.sidebar.metric(texts['selected_papers'], f"{filtered_count:,}{papers_text}" if lang == 'ko' else f"{filtered_count:,} {papers_text}")
+        st.sidebar.metric(texts['total_papers'], f"{len(df):,}{papers_text}" if lang == 'ko' else f"{len(df):,} {papers_text}")
+        st.sidebar.metric(texts['year_range_label'], f"{min_year} - {max_year}")
+        groups_text = texts['groups'] if lang == 'en' else '개'
+        st.sidebar.info(f"{texts['selected_groups']}: {len(selected_groups)}{groups_text}")
         # 선택된 그룹의 카테고리 수집
         selected_cats = set()
         for group_name in selected_groups:
             if group_name in CATEGORY_GROUPS:
                 selected_cats.update(CATEGORY_GROUPS[group_name]["categories"])
-        st.sidebar.caption(f"포함 카테고리: {len(selected_cats)}개")
-        st.sidebar.info(f"키워드 소스: **{keyword_source}**")
+        categories_text = texts['categories'] if lang == 'en' else '개'
+        st.sidebar.caption(f"{texts['included_categories']}: {len(selected_cats)}{categories_text}")
+        st.sidebar.info(f"{texts['keyword_source_label']}: **{keyword_source}**")
     else:
-        st.sidebar.metric("총 논문 수", f"{len(df):,}건")
-        st.sidebar.metric("연도 범위", f"{min_year} - {max_year}")
-        st.sidebar.info("👆 카테고리를 선택하고 '분석 시작' 버튼을 클릭하세요.")
+        papers_text = texts['papers_count'] if lang == 'ko' else 'papers'
+        st.sidebar.metric(texts['papers'], f"{len(df):,}{papers_text}" if lang == 'ko' else f"{len(df):,} {papers_text}")
+        st.sidebar.metric(texts['year_range_label'], f"{min_year} - {max_year}")
+        st.sidebar.info(texts['select_category_info'])
+    
+    # 사이드바 설정 (맨 아래로 이동)
+    st.sidebar.markdown("---")
+    st.sidebar.header(texts['settings'])
+    
+    # 언어 선택 (설정 내부)
+    language_options = {
+        '한국어': 'ko',
+        'English': 'en'
+    }
+    selected_lang_name = [k for k, v in language_options.items() if v == lang][0]
+    new_lang_name = st.sidebar.selectbox(
+        texts['language'],
+        options=list(language_options.keys()),
+        index=list(language_options.keys()).index(selected_lang_name),
+        key='lang_select'
+    )
+    
+    # 언어가 변경되면 세션 상태 업데이트 및 새로고침
+    if language_options[new_lang_name] != lang:
+        st.session_state.language = language_options[new_lang_name]
+        st.rerun()
+    
+    # 언어 재설정 (변경 후)
+    lang = get_language()
+    texts = TEXTS[lang]
+    
+    # 캐시 클리어 버튼
+    if st.sidebar.button(texts['clear_cache'], use_container_width=True, help=texts['clear_cache_help']):
+        st.cache_data.clear()
+        st.rerun()
+    
+    st.sidebar.caption(texts['clear_cache_caption'])
     
     # 분석이 시작되지 않았으면 안내 메시지 표시
     if not st.session_state.analysis_started:
-        st.info("👈 사이드바에서 카테고리를 선택하고 '분석 시작' 버튼을 클릭하여 분석을 시작하세요.")
+        st.info(texts['start_analysis_info'])
         st.stop()
     
     # 필터링된 데이터가 없으면 중지
     if st.session_state.filtered_df is None or len(st.session_state.filtered_df) == 0:
-        st.warning("선택된 카테고리에 해당하는 데이터가 없습니다.")
+        st.warning(texts['no_data_warning'])
         st.stop()
     
     # 키워드 데이터가 없으면 중지
     if st.session_state.keyword_df is None or len(st.session_state.keyword_df) == 0:
-        st.warning("키워드를 추출할 수 없습니다. 다른 설정을 시도해보세요.")
+        st.warning(texts['no_keywords_warning'])
         st.stop()
     
     keyword_df = st.session_state.keyword_df
     
     # 탭 구성
     tab1, tab2, tab3, tab4 = st.tabs([
-        "📈 연도별 흐름 (Trend)",
-        "🔥 히트맵 (Heatmap)",
-        "🏆 순위 경쟁 (Bump Chart)",
-        "🚀 하이프 사이클 (Hype Cycle)"
+        texts['tab_trend'],
+        texts['tab_heatmap'],
+        texts['tab_bump'],
+        texts['tab_hype']
     ])
     
     # Tab 1: 연도별 흐름
     with tab1:
-        st.header("연도별 주요 키워드 트렌드")
-        st.markdown("시간에 따른 주요 키워드의 논문 수 변화를 시각화합니다.")
+        st.header(texts['trend_header'])
+        st.markdown(texts['trend_desc'])
         
-        trend_fig = create_trend_chart(keyword_df, selected_years)
+        trend_fig = create_trend_chart(keyword_df, selected_years, lang)
         st.plotly_chart(trend_fig, use_container_width=True)
         
         # 통계 테이블
-        st.subheader("키워드별 통계")
+        st.subheader(texts['keyword_stats'])
         filtered_df = keyword_df[keyword_df['Year'].between(selected_years[0], selected_years[1])]
         keyword_summary = filtered_df.groupby('Keyword')['Count'].agg(['sum', 'mean', 'max']).round(1)
-        keyword_summary.columns = ['총 논문 수', '평균 논문 수', '최대 논문 수']
-        keyword_summary = keyword_summary.sort_values('총 논문 수', ascending=False)
+        keyword_summary.columns = [texts['total_papers_col'], texts['avg_papers_col'], texts['max_papers_col']]
+        keyword_summary = keyword_summary.sort_values(texts['total_papers_col'], ascending=False)
         st.dataframe(keyword_summary, use_container_width=True)
     
     # Tab 2: 히트맵
     with tab2:
-        st.header("연도별 키워드 빈도 히트맵")
-        st.markdown("연도와 키워드의 교차점에서 논문 수를 색상 농도로 표현합니다.")
+        st.header(texts['heatmap_header'])
+        st.markdown(texts['heatmap_desc'])
         
-        heatmap_fig = create_heatmap(keyword_df, selected_years)
+        heatmap_fig = create_heatmap(keyword_df, selected_years, lang)
         st.plotly_chart(heatmap_fig, use_container_width=True)
     
     # Tab 3: 순위 경쟁
     with tab3:
-        st.header("연도별 키워드 순위 변화")
-        st.markdown("시간에 따른 키워드의 순위 변화를 추적합니다.")
+        st.header(texts['bump_header'])
+        st.markdown(texts['bump_desc'])
         
-        bump_fig = create_bump_chart(keyword_df, selected_years, top_n=min(top_n, 15))
+        bump_fig = create_bump_chart(keyword_df, selected_years, top_n=min(top_n, 15), lang=lang)
         st.plotly_chart(bump_fig, use_container_width=True)
     
     # Tab 4: 하이프 사이클
     with tab4:
-        st.header("하이프 사이클 스타일 차트")
-        st.markdown("기술 성장률과 총 언급량을 기준으로 키워드를 배치합니다.")
-        st.markdown("- **X축**: 기술 성장률 (전년 대비 증가율)")
-        st.markdown("- **Y축**: 기술 언급량 (Total Volume)")
-        st.markdown("- **점 크기**: 최신 연도 언급량")
+        st.header(texts['hype_header'])
+        st.markdown(texts['hype_desc'])
+        st.markdown(f"- **{texts['hype_xaxis_label']}**: {texts['hype_xaxis_desc']}")
+        st.markdown(f"- **{texts['hype_yaxis_label']}**: {texts['hype_yaxis_desc']}")
+        st.markdown(f"- **{texts['hype_size_label']}**: {texts['hype_size_desc']}")
         
-        hype_fig = create_hype_cycle_chart(keyword_df, selected_years)
+        hype_fig = create_hype_cycle_chart(keyword_df, selected_years, lang)
         if hype_fig:
             st.plotly_chart(hype_fig, use_container_width=True)
         else:
-            st.warning("데이터가 부족하여 차트를 생성할 수 없습니다.")
+            st.warning(texts['hype_no_data'])
     
     # 푸터
     st.markdown("---")
-    st.markdown("### 📝 참고사항")
-    st.markdown("- 데이터는 arXiv API를 통해 수집되었습니다.")
-    st.markdown("- 키워드는 논문 제목(Title)과 초록(Abstract)에서 추출되었으며, 불필요한 단어는 제외되었습니다.")
-    st.markdown("- 데이터 수집기간 : 2021~2025년, (만든이 : Minsu Hwang)")
+    st.markdown(f"### {texts['footer_notes']}")
+    st.markdown(f"- {texts['footer_data_source']}")
+    st.markdown(f"- {texts['footer_keyword_source']}")
+    st.markdown(f"- {texts['footer_period']}")
 
 
 if __name__ == "__main__":
