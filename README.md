@@ -49,7 +49,7 @@ python collector_improved.py
 
 **참고**: 대용량 데이터의 경우 파일을 두 개로 분할하여 저장한 후, `arxiv_data_part1.csv.gz`와 `arxiv_data_part2.csv.gz`로 압축하여 저장하는 것을 권장합니다.
 
-### 3. 대시보드 실행
+### 3. 대시보드 실행 
 
 Streamlit 대시보드를 실행합니다:
 
@@ -58,6 +58,13 @@ streamlit run app.py
 ```
 
 브라우저에서 자동으로 대시보드가 열립니다.
+![카테고리 설정](https://github.com/user-attachments/assets/622048f6-5fa3-4433-953e-f94fe500d9da)
+
+![데이터 시각화](https://github.com/user-attachments/assets/0127b4b1-5ce6-416f-ab82-696cee4ede4b)
+
+## 🌐 Live Demo
+대시보드를 직접 조작해 보려면 아래 링크를 클릭하세요:
+[🚀 라이브 대시보드 바로가기](https://robotics-trend.streamlit.app/)
 
 ## 📊 대시보드 기능
 
