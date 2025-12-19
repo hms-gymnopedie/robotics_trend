@@ -59,6 +59,12 @@ streamlit run app.py
 
 The dashboard will automatically open in your browser.
 
+![Category Selection](https://github.com/user-attachments/assets/657e2120-d848-4951-a181-13a4685399b2)
+
+
+![Data Visualization](https://github.com/user-attachments/assets/4fc8575e-9fe0-44c4-845e-1612e5ff3c25)
+
+
 ## 📊 Dashboard Features
 
 ### Sidebar Settings
@@ -100,6 +106,11 @@ The dashboard will automatically open in your browser.
 - Y-axis: Technology Mentions (Total Volume)
 - Point Size: Latest Year Mentions
 - Visually analyze technology growth stages
+
+
+## 🌐 Live Demo
+- If you want to use, click the link.
+[🚀 LIVE DASHBOARD GO](https://robotics-trend.streamlit.app/)
 
 ## 📁 Project Structure
 
